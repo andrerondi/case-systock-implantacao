@@ -66,6 +66,7 @@ FROM public.venda v
 WHERE v.data_emissao BETWEEN '2025-02-01' AND '2025-02-28'
 GROUP BY v.data_emissao
 ORDER BY v.data_emissao;
+```
 
 **B. Consulta de Auditoria de Recebimento (Mostrando valor consultivo):**
 > *"Detetámos que a vossa equipa fez algumas requisições de mercadoria, mas elas não deram entrada física. Isto está retido no fornecedor?"*
@@ -79,6 +80,7 @@ FROM public.pedido_compra pc
 LEFT JOIN public.entradas_mercadoria em ON pc.ordem_compra = em.ordem_compra
 GROUP BY pc.pedido_id, pc.produto_id, pc.descricao_produto, pc.qtde_pedida
 HAVING (pc.qtde_pedida - COALESCE(SUM(em.qtde_recebida), 0)) > 0;
+```
 
 **C. Consulta de Higiene Cadastral (Erros Intencionais Operacionais):**
 > *"Sr. Cliente, notámos algumas entradas de notas que estão 'órfãs', sem ligação ao pedido de compra. A nossa plataforma já mapeou essas inconsistências."*
@@ -90,3 +92,4 @@ SELECT
     qtde_recebida 
 FROM public.entradas_mercadoria 
 WHERE ordem_compra = 0 OR ordem_compra IS NULL;
+```
